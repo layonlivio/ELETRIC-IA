@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-graphite: #0f172a;
+    --color-graphite-light: #1e293b;
+    --color-blue: #1e40af;
+    --color-blue-light: #3b82f6;
+    --color-green: #16a34a;
+    --color-red: #dc2626;
+    --color-amber: #d97706;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    overscroll-behavior: none;
+  }
+
+  /* Safe area for mobile */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-slate-200 p-4;
+  }
+  .btn-primary {
+    @apply bg-blue-600 text-white font-semibold py-3 px-6 rounded-xl active:bg-blue-700 transition-colors flex items-center justify-center gap-2;
+  }
+  .btn-secondary {
+    @apply bg-slate-100 text-slate-700 font-semibold py-3 px-6 rounded-xl active:bg-slate-200 transition-colors flex items-center justify-center gap-2;
+  }
+  .btn-success {
+    @apply bg-green-600 text-white font-semibold py-3 px-6 rounded-xl active:bg-green-700 transition-colors flex items-center justify-center gap-2;
+  }
+  .input-field {
+    @apply w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all;
+  }
+  .chip {
+    @apply px-4 py-2 rounded-full font-medium text-sm transition-all active:scale-95;
+  }
+  .chip-active {
+    @apply bg-blue-600 text-white;
+  }
+  .chip-inactive {
+    @apply bg-slate-100 text-slate-600;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
