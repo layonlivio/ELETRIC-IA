@@ -248,12 +248,12 @@ CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 SET search_path = public
-AS $
+AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
 END;
-$;
+$$;
 
 DROP TRIGGER IF EXISTS trigger_profiles_updated_at ON profiles;
 CREATE TRIGGER trigger_profiles_updated_at BEFORE UPDATE ON profiles
@@ -273,14 +273,14 @@ RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public, auth
-AS $
+AS $$
 BEGIN
   INSERT INTO public.profiles (id, name, plan)
   VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'name', ''), 'normal')
   ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
 END;
-$;
+$$;
 
 REVOKE EXECUTE ON FUNCTION handle_new_user() FROM anon, authenticated;
 
