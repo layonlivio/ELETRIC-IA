@@ -1,0 +1,19 @@
+/*
+# Restringe escritas sensiveis
+
+1. Problema
+- O usuario logado conseguia alterar o proprio plano (profiles.plan) e
+  criar/alterar assinaturas (subscriptions) direto pela API.
+
+2. Mudancas
+- profiles: o usuario so pode atualizar as colunas name e phone.
+- subscriptions e materials: somente leitura para o usuario.
+- O plano e as assinaturas so mudam pelo servidor (service_role).
+*/
+
+REVOKE INSERT, UPDATE, DELETE ON public.profiles FROM anon, authenticated;
+GRANT UPDATE (name, phone) ON public.profiles TO authenticated;
+
+REVOKE INSERT, UPDATE, DELETE ON public.subscriptions FROM anon, authenticated;
+
+REVOKE INSERT, UPDATE, DELETE ON public.materials FROM anon, authenticated;
