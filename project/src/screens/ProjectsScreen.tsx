@@ -25,7 +25,10 @@ export default function ProjectsScreen({ onOpenProject, onNewProject }: ProjectL
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     loadProjects();
   }, [user]);
 
@@ -60,14 +63,24 @@ export default function ProjectsScreen({ onOpenProject, onNewProject }: ProjectL
     <div className="px-4 py-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">Projetos</h1>
-        <button
-          onClick={onNewProject}
-          disabled={!canCreate}
-          className="btn-primary py-2 px-4 text-sm"
-        >
-          <Plus size={18} /> Novo
-        </button>
+        {user && (
+          <button
+            onClick={onNewProject}
+            disabled={!canCreate}
+            className="btn-primary py-2 px-4 text-sm"
+          >
+            <Plus size={18} /> Novo
+          </button>
+        )}
       </div>
+
+      {!user && (
+        <div className="card bg-blue-50 border-blue-200">
+          <p className="text-sm text-blue-800">
+            Você está no modo visitante. Os cálculos estão disponíveis; projetos salvos na nuvem ficam disponíveis quando uma conta estiver conectada.
+          </p>
+        </div>
+      )}
 
       {!canCreate && (
         <div className="card bg-amber-50 border-amber-200">
@@ -80,6 +93,12 @@ export default function ProjectsScreen({ onOpenProject, onNewProject }: ProjectL
       {loading ? (
         <div className="text-center py-12 text-slate-400">
           <p>Carregando projetos...</p>
+        </div>
+      ) : !user ? (
+        <div className="text-center py-16">
+          <FolderOpen size={48} className="text-slate-300 mx-auto mb-4" />
+          <p className="text-slate-500 font-medium">Nenhum projeto carregado</p>
+          <p className="text-sm text-slate-400 mt-1">O modo visitante não salva projetos na nuvem.</p>
         </div>
       ) : projects.length === 0 ? (
         <div className="text-center py-16">

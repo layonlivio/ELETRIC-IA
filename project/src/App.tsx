@@ -8,7 +8,6 @@ import ProjectDetailScreen from '@/screens/ProjectDetailScreen';
 import NewProjectScreen from '@/screens/NewProjectScreen';
 import AIScreen from '@/screens/AIScreen';
 import ProfileScreen from '@/screens/ProfileScreen';
-import AuthScreen from '@/screens/AuthScreen';
 
 type Screen =
   | { name: 'main' }
@@ -17,7 +16,7 @@ type Screen =
   | { name: 'project'; projectId: string };
 
 function AppContent() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
   const [tab, setTab] = useState<Tab>('home');
   const [screen, setScreen] = useState<Screen>({ name: 'main' });
 
@@ -35,8 +34,6 @@ function AppContent() {
       </div>
     );
   }
-
-  if (!user) return <AuthScreen />;
 
   // Full-screen overlays
   if (screen.name === 'quickcalc') {
