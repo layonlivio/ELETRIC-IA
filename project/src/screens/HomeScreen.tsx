@@ -10,13 +10,13 @@ interface HomeScreenProps {
 }
 
 export default function HomeScreen({ onNavigate, onNewProject, onQuickCalc }: HomeScreenProps) {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const plan = (profile?.plan as 'normal' | 'pro') || 'normal';
   const isPro = plan === 'pro';
 
   const shortcuts = [
     { icon: Zap, label: 'Cálculo rápido', color: 'bg-amber-500', onClick: onQuickCalc },
-    { icon: Home, label: 'Novo projeto', color: 'bg-blue-600', onClick: onNewProject },
+    { icon: Home, label: 'Novo projeto', color: 'bg-blue-600', onClick: user ? onNewProject : () => onNavigate('projects'), locked: !user },
     { icon: Bot, label: 'Perguntar à IA', color: 'bg-slate-800', onClick: () => onNavigate('ai'), locked: !PLAN_FEATURES[plan].ai_enabled },
     { icon: FileText, label: 'Meus relatórios', color: 'bg-slate-700', onClick: () => onNavigate('projects') },
     { icon: DollarSign, label: 'Orçamento', color: 'bg-green-600', onClick: () => onNavigate('projects'), locked: !PLAN_FEATURES[plan].budget },
