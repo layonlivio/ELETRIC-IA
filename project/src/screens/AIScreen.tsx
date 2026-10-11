@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Send, Bot, User, Trash2, Lock } from 'lucide-react';
+import { Send, Bot, User, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { sendChatMessage, loadChatHistory, clearChatHistory, type ChatMessage } from '@/lib/ai';
-import { PLAN_FEATURES } from '@/lib/plans';
 import type { CalcResult } from '@/lib/nbr5410';
 
 interface AIScreenProps {
@@ -27,17 +26,16 @@ interface AIScreenProps {
 
 export default function AIScreen({ projectId, projectContext }: AIScreenProps) {
   const { user, profile } = useAuth();
+  const chatUserId = user?.id || '00000000-0000-0000-0000-000000000000';
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const plan = (profile?.plan as 'normal' | 'pro') || 'normal';
-  const aiEnabled = PLAN_FEATURES[plan].ai_enabled;
+  const plan = (profile?.plan as 'normal' | 'pro') || 'pro';
 
   useEffect(() => {
-    if (!user) return;
-    loadChatHistory(user.id, projectId).then((msgs) => {
+    loadChatHistory(chatUserId, projectId).then((msgs) => {
       if (msgs.length === 0) {
         setMessages([{
           id: 'welcome',
@@ -49,14 +47,14 @@ export default function AIScreen({ projectId, projectContext }: AIScreenProps) {
         setMessages(msgs);
       }
     });
-  }, [user, projectId]);
+  }, [chatUserId, projectId]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages]);
 
   async function handleSend() {
-    if (!input.trim() || !user || loading) return;
+    if (!input.trim() || loading) return;
     const msg = input.trim();
     setInput('');
     setLoading(true);
@@ -70,7 +68,7 @@ export default function AIScreen({ projectId, projectContext }: AIScreenProps) {
     setMessages((prev) => [...prev, userMsg]);
 
     try {
-      const answer = await sendChatMessage(msg, user.id, projectId, projectContext ? { project: projectContext } : undefined);
+      const answer = await sendChatMessage(msg, chatUserId, projectId, projectContext ? { project: projectContext } : undefined);
       setMessages((prev) => [...prev, {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -89,26 +87,13 @@ export default function AIScreen({ projectId, projectContext }: AIScreenProps) {
   }
 
   async function handleClear() {
-    if (!user) return;
-    await clearChatHistory(user.id, projectId);
+    await clearChatHistory(chatUserId, projectId);
     setMessages([{
       id: 'welcome',
       role: 'assistant',
       content: 'Conversa reiniciada. Como posso ajudar?',
       created_at: new Date().toISOString(),
     }]);
-  }
-
-  if (!aiEnabled) {
-    return (
-      <div className="px-4 py-6">
-        <div className="card text-center py-12">
-          <Lock size={40} className="text-slate-300 mx-auto mb-3" />
-          <h2 className="text-lg font-bold text-slate-900 mb-1">Recurso PRO</h2>
-          <p className="text-sm text-slate-500">A IA consultora está disponível no plano PRO. Faça upgrade para acessar.</p>
-        </div>
-      </div>
-    );
   }
 
   return (

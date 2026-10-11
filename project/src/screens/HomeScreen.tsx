@@ -11,7 +11,7 @@ interface HomeScreenProps {
 
 export default function HomeScreen({ onNavigate, onNewProject, onQuickCalc }: HomeScreenProps) {
   const { profile, user } = useAuth();
-  const plan = (profile?.plan as 'normal' | 'pro') || 'normal';
+  const plan = (profile?.plan as 'normal' | 'pro') || 'pro';
   const isPro = plan === 'pro';
 
   const shortcuts = [
@@ -66,7 +66,7 @@ export default function HomeScreen({ onNavigate, onNewProject, onQuickCalc }: Ho
         </p>
       </div>
 
-      {!isPro && (
+      {!isPro && user && (
         <button
           onClick={() => onNavigate('profile')}
           className="card w-full flex items-center justify-between active:scale-[0.98] transition-transform border-blue-200 bg-blue-50"

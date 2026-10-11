@@ -56,7 +56,7 @@ export default function ProjectsScreen({ onOpenProject, onNewProject }: ProjectL
     setLoading(false);
   }
 
-  const plan = (profile?.plan as 'normal' | 'pro') || 'normal';
+  const plan = (profile?.plan as 'normal' | 'pro') || 'pro';
   const canCreate = canCreateProject(plan, projects.length);
 
   return (

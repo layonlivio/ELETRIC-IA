@@ -54,7 +54,7 @@ export default function ProjectDetailScreen({ projectId, onBack }: ProjectDetail
   const [showEditProject, setShowEditProject] = useState(false);
   const [materiais, setMateriais] = useState<MaterialItem[]>([]);
 
-  const plan = (profile?.plan as 'normal' | 'pro') || 'normal';
+  const plan = (profile?.plan as 'normal' | 'pro') || 'pro';
 
   useEffect(() => {
     loadProject();

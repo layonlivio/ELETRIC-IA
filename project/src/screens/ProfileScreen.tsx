@@ -13,7 +13,7 @@ export default function ProfileScreen() {
   const [selectedPlan, setSelectedPlan] = useState<PlanType>('pro');
   const [period, setPeriod] = useState<PeriodType>('monthly');
 
-  const plan = (profile?.plan as PlanType) || 'normal';
+  const plan = (profile?.plan as PlanType) || 'pro';
 
   async function handleSave() {
     await updateProfile({ name, phone });
