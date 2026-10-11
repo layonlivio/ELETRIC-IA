@@ -17,7 +17,7 @@ const tabs: { id: Tab; label: string; icon: typeof Home }[] = [
 
 export default function BottomNav({ active, onChange }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 safe-bottom z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#0b1626]/95 backdrop-blur-xl border-t border-white/10 safe-bottom z-50">
       <div className="flex items-center justify-around h-16 max-w-md mx-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -30,10 +30,10 @@ export default function BottomNav({ active, onChange }: BottomNavProps) {
             >
               <Icon
                 size={22}
-                className={isActive ? 'text-blue-600' : 'text-slate-400'}
+                className={isActive ? 'text-amber-300' : 'text-slate-500'}
                 strokeWidth={isActive ? 2.5 : 2}
               />
-              <span className={`text-xs font-medium ${isActive ? 'text-blue-600' : 'text-slate-400'}`}>
+              <span className={`text-xs font-medium ${isActive ? 'text-amber-300' : 'text-slate-500'}`}>
                 {tab.label}
               </span>
             </button>
